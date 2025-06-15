@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/15 01:12:05 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 00:18:44 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	fractol_formula(double z_real, double z_i, double c_real, double c_i)
 	return (0);
 }
 
-void	set_data(t_mlx_data *data, int ac, char **av)
+void	restart_data(t_mlx_data *data, int ac, char **av)
 {
 	data->av = av;
 	data->x_mult = 2.65;
@@ -51,6 +51,8 @@ void	set_data(t_mlx_data *data, int ac, char **av)
 }
 int	exit_func(t_mlx_data *data)
 {
+	if (data->img2.img_ptr)
+		mlx_destroy_image(data->mlx_ptr, data->img2.img_ptr);
 	if (data->img.img_ptr)
 		mlx_destroy_image(data->mlx_ptr, data->img.img_ptr);
 	if (data->win_ptr)
@@ -119,7 +121,6 @@ int	Mandelbrot(t_mlx_data *data)
 	y = -1;
 	w = WIDTH;
 	h = HIGHT;
-	printf("%f, %f\n", data->real, data->i);
 	while (++y < h)
 	{
 		x = -1;
@@ -286,7 +287,7 @@ int	key_hook(int keysym, t_mlx_data *data)
 	if (keysym == XK_Escape)
 		exit_func(data);
 	if (keysym == XK_space)
-		set_data(data, data->ac, data->av);
+		restart_data(data, data->ac, data->av);
 	if (keysym == XK_space)
 		Julia_or_Mandelbrot(data);
 	if (keysym == XK_Down)
@@ -323,7 +324,7 @@ void	mouse_zoom(t_mlx_data *data, int x, int y, int flag)
 }
 
 
-int	second_Julia_set(t_mlx_data *data, t_image *img, float r, float i)
+int	second_Julia_set(t_mlx_data *data, float r, float i)
 {
 	double	x;
 	double	y;
@@ -338,29 +339,160 @@ int	second_Julia_set(t_mlx_data *data, t_image *img, float r, float i)
 		x = -1;
 		while (++x < w)
 		{
-			my_put_pixel(img, x, y, 
-				fractol_formula(((x * data->x_mult / w)) - data->x_cords,
+			my_put_pixel(&data->img2, x, y, 
+				fractol_formula(((x * data->x_mult / w)) - 1.325,
 				data->y_cords - ((y * data->y_mult) / h), r, i));
 		}
 	}
-	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr2, data->img.img_ptr, 0 , 0);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr2, data->img2.img_ptr, 0 , 0);
 	return (0);
 }
 
-int	mouse_hook(int keysym, int x, int y,t_mlx_data *data)
+void	data_set(t_mlx_data *data, float rx, float ry)
+{
+	data->x_mult = 2.65;
+	data->y_mult =  2.5;
+	data->y_cords = 1.25;
+	data->real = rx;
+	data->i = ry;
+	data->flag = 1;
+	data->x_cords = 1.325;
+}
+
+void	my_put_pixel_lines(t_image *img, int x, int y)
+{
+	int	offset;
+
+	offset = (img->line_len * y) + (x * (img->bpp / 8));
+	*((unsigned int *)(offset + img->pixel_ptr)) = 16777215;
+}
+
+void	draw_line_aux(t_mlx_data *data, t_comp v, double a, double b)
+{
+	double	x;
+	double	y;
+
+	x = v.r_min - 1;
+	while (++x < v.r_max && x < HIGHT - 1 && x > 0)
+	{
+		y = a * x + b;
+		my_put_pixel_lines(&data->img, x, y);
+	}
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0 , 0);
+}
+
+void	draw_line(t_mlx_data *data, t_comp v, double a, double b)
+{
+	double	x;
+	double	y;
+
+	y = v.i_min - 1;
+	while (++y < v.i_max)
+	{
+		x = (y - b) / a;
+		my_put_pixel_lines(&data->img, x, y);
+	}
+	draw_line_aux(data, v, a, b);
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0 , 0);
+}
+
+int check_color(t_image *img, float x ,float y)
+{
+	int	offset;
+
+	offset = (img->line_len * y) + (x * (img->bpp / 8));
+	return (*((unsigned int *)(offset + img->pixel_ptr)) != 0);
+}
+
+int	get_formula(t_comp z1, t_comp z2, t_mlx_data *data, int ind)
+{
+	double	a;
+	double	b;
+	t_comp	v;
+	
+	a = WIDTH;
+	b = HIGHT;
+	z1.real = (z1.real + data->x_cords) * (a / data->x_mult);
+	z2.real = (z2.real + data->x_cords) * (a / data->x_mult);
+	z1.i = (data->y_cords - z1.i) * (b / data->y_mult);
+	z2.i = (data->y_cords - z2.i) * (b / data->y_mult);
+	a = ((z1.i - z2.i) / (z1.real - z2.real));
+	b = z1.i - a * (z1.real);
+	if (z1.i < z2.i)
+	{
+		v.i_min = z1.i;
+		v.i_max = z2.i;
+	}
+	else
+	{
+		v.i_max = z1.i;
+		v.i_min = z2.i;
+	}
+	if (z1.real > z2.real)
+	{
+		v.r_max = z1.real;
+		v.r_min = z2.real;
+	}
+	else
+	{
+		v.r_max = z2.real;
+		v.r_min = z1.real;
+	}
+	if (v.r_max >= WIDTH || v.r_min <= 0 || v.i_min <= 0 || v.i_max >= HIGHT)
+		return (1);
+	return (draw_line(data, v, a, b), 0);
+}
+
+void	draw_orbit(t_mlx_data *data, float c_real, float c_i)
+{
+	t_comp	z1;
+	t_comp	z2;
+	float	real;
+	int		ind;
+
+	ind = -1;
+	z2.real = 0;
+	z2.i = 0;
+	z1.real = 0;
+	z1.i = 0;
+	while (++ind < 150)
+	{
+		real = (z2.real * z2.real) - (z2.i * z2.i) + c_real;
+		z2.i = (z2.real * z2.i * 2) + c_i;
+		z2.real = real;
+		if (get_formula(z1, z2, data, ind))
+			return ;
+		z1.real = z2.real;
+		z1.i = z2.i;
+	}
+}
+
+int	mouse_hook(int keysym, int x, int y, t_mlx_data *data)
 {
 	float	rx;
 	float	ry;
 
 	rx = x;
 	ry = y;
-	if (keysym == 1)
+	if (keysym == 0 && data->flag == 0)
 	{
 		if (data->win_ptr2 == NULL)
 			data->win_ptr2 = mlx_new_window(data->mlx_ptr, WIDTH, HIGHT, "Julia_set");
-		if (data->win_ptr2 == NULL)
-			exit_func(data);
-		second_Julia_set(data, &data->img, (rx * data->x_mult / WIDTH) - data->x_cords, data->y_cords - ((ry * data->y_mult) / HIGHT));
+		data->lr = (rx * data->x_mult / WIDTH) - data->x_cords;
+		data->li = data->y_cords - ((ry * data->y_mult) / HIGHT);
+		printf("%f %f\n", data->lr, data->li);
+		second_Julia_set(data, (rx * data->x_mult / WIDTH) - data->x_cords, data->y_cords - ((ry * data->y_mult) / HIGHT));
+	}
+	if (keysym == 1)
+		Julia_or_Mandelbrot(data);
+	if (keysym == 1  && !check_color(&data->img, rx, ry))
+		draw_orbit(data, (((rx - 94)* data->x_mult / WIDTH) - data->x_cords) / 1.124, data->y_cords - ((ry * data->y_mult) / HIGHT));
+	if (keysym == 3 && data->flag == 0 && data->win_ptr2)
+	{
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr2);
+		data->win_ptr2 = NULL;
+		data_set(data, data->lr, data->li);
+		Julia_set(data);
 	}
 	if (keysym == 4)
 		mouse_zoom(data, x, y, -1);
@@ -373,7 +505,7 @@ int	main(int ac, char **av)
 {
 	t_mlx_data	data;
 
-	set_data(&data, ac, av);
+	restart_data(&data, ac, av);
 	data.mlx_ptr = mlx_init();
 	if (data.mlx_ptr == NULL)
 		return (1);
@@ -384,9 +516,13 @@ int	main(int ac, char **av)
 	data.img.img_ptr = mlx_new_image(data.mlx_ptr, WIDTH, HIGHT);
 	data.img.pixel_ptr = mlx_get_data_addr
 	(data.img.img_ptr, &data.img.bpp, &data.img.line_len, &data.img.endian);
+	data.img2.img_ptr = mlx_new_image(data.mlx_ptr, WIDTH, HIGHT);
+	data.img2.pixel_ptr = mlx_get_data_addr
+	(data.img2.img_ptr, &data.img2.bpp, &data.img2.line_len, &data.img2.endian);
+
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
 	mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
-	fflush(stdout);
 	Julia_or_Mandelbrot(&data);
 	mlx_loop(data.mlx_ptr);
 }
+

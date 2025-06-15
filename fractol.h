@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/15 00:11:29 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/15 20:16:18 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ typedef struct s_comp
 {
 	double	real;
 	double	i;
+	double	r_min;
+	double	r_max;
+	double	i_min;
+	double	i_max;
+
 }	t_comp;
 
 typedef struct s_image
@@ -55,7 +60,10 @@ typedef struct s_mlx_data
 	void	*win_ptr2;
 	void	*mlx_ptr;
 	char	**av;
+	double	lr;
+	double	li;
 	t_image	img;
+	t_image	img2;
 }	t_mlx_data;
 
 int	Julia_set(t_mlx_data *data);
