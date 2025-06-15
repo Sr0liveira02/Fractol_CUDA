@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/15 00:58:05 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/15 01:12:05 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,8 +322,46 @@ void	mouse_zoom(t_mlx_data *data, int x, int y, int flag)
 		Mandelbrot(data);
 }
 
+
+int	second_Julia_set(t_mlx_data *data, t_image *img, float r, float i)
+{
+	double	x;
+	double	y;
+	double	w;
+	double	h;
+
+	y = -1;
+	w = WIDTH;
+	h = HIGHT;
+	while (++y < h)
+	{
+		x = -1;
+		while (++x < w)
+		{
+			my_put_pixel(img, x, y, 
+				fractol_formula(((x * data->x_mult / w)) - data->x_cords,
+				data->y_cords - ((y * data->y_mult) / h), r, i));
+		}
+	}
+	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr2, data->img.img_ptr, 0 , 0);
+	return (0);
+}
+
 int	mouse_hook(int keysym, int x, int y,t_mlx_data *data)
 {
+	float	rx;
+	float	ry;
+
+	rx = x;
+	ry = y;
+	if (keysym == 1)
+	{
+		if (data->win_ptr2 == NULL)
+			data->win_ptr2 = mlx_new_window(data->mlx_ptr, WIDTH, HIGHT, "Julia_set");
+		if (data->win_ptr2 == NULL)
+			exit_func(data);
+		second_Julia_set(data, &data->img, (rx * data->x_mult / WIDTH) - data->x_cords, data->y_cords - ((ry * data->y_mult) / HIGHT));
+	}
 	if (keysym == 4)
 		mouse_zoom(data, x, y, -1);
 	if (keysym == 5)
