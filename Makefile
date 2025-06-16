@@ -6,7 +6,7 @@
 #    By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/12 13:07:24 by jlima-so          #+#    #+#              #
-#    Updated: 2025/06/15 21:57:46 by jlima-so         ###   ########.fr        #
+#    Updated: 2025/06/16 12:30:25 by jlima-so         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,8 +63,7 @@ CC=cc
 
 AR=ar rcs
 
-CFLAGS= 
-#-Wall -Wextra -Werror
+CFLAGS= -Wall -Wextra -Werror
 
 HD=
 #-D HIGHT=100
