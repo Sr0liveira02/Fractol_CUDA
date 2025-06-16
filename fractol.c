@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 15:04:52 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:09:32 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	restart_data(t_mlx_data *data, int ac, char **av)
 	data->x_mult = 2.65;
 	data->y_mult = 2.5;
 	data->y_cords = 1.25;
-	data->col = XK_1;
+	if (av != NULL)
+		data->col = XK_1;
 	data->sc = 150;
 	if (ac == 3)
 	{
@@ -375,7 +376,7 @@ int	key_hook(int key, t_mlx_data *data)
 	if (key == XK_Escape)
 		exit_func(data);
 	if (key == XK_space)
-		restart_data(data, data->ac, data->av);
+		restart_data(data, data->ac, NULL);
 	if (key == XK_space)
 		julia_or_mandelbrot(data);
 	movin_around(key, data);
@@ -426,21 +427,6 @@ void	my_put_pixel_lines(t_image *img, int x, int y)
 	*((unsigned int *)(offset + img->pixel_ptr)) = 16777215;
 }
 
-void	draw_line_aux(t_mlx_data *data, t_comp v, double a, double b)
-{
-	double	x;
-	double	y;
-
-	x = v.r_min - 1;
-	while (++x < v.r_max && x < HIGHT - 1 && x > 0)
-	{
-		y = a * x + b;
-		my_put_pixel_lines(&data->img, x, y);
-	}
-	mlx_put_image_to_window
-	(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0, 0);
-}
-
 void	draw_line(t_mlx_data *data, t_comp v, double a, double b)
 {
 	double	x;
@@ -452,7 +438,12 @@ void	draw_line(t_mlx_data *data, t_comp v, double a, double b)
 		x = (y - b) / a;
 		my_put_pixel_lines(&data->img, x, y);
 	}
-	draw_line_aux(data, v, a, b);
+	x = v.r_min - 1;
+	while (++x < v.r_max && x < HIGHT - 1 && x > 0)
+	{
+		y = a * x + b;
+		my_put_pixel_lines(&data->img, x, y);
+	}
 	mlx_put_image_to_window
 	(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0, 0);
 }
