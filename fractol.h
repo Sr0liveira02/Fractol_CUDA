@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 15:00:40 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 16:54:59 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int		Mandelbrot(t_mlx_data *data);
 int		fractol_formula(t_mlx_data *data);
 void	draw_orbit(t_mlx_data *data, float c_real, float c_i);
 int		check_color(t_image *img, float x, float y);
-void	movin_around(int key, t_mlx_data *data); // idk what to do with this
 void	go_up(t_mlx_data *data, int divide);
 void	go_down(t_mlx_data *data, int divide);
 void	go_left(t_mlx_data *data, int divide);
@@ -102,5 +101,6 @@ void	mouse_zoom(t_mlx_data *data, int x, int y, int flag);
 void	restart_data(t_mlx_data *data, int ac, char **av);
 int		exit_func(t_mlx_data *data);
 int		go_func(t_mlx_data *data, double x, double y);
+void	key_hook_aux(int key, t_mlx_data *data);
 
 #endif
