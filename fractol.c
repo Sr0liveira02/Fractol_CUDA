@@ -6,37 +6,11 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:00:16 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:59:55 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-void	color_code(int key, t_mlx_data *data)
-{
-	data->col = key;
-	if (key == XK_7)
-	{
-		data->a = (((int)(0.938 * 255)) << 16) + (((int)(0.328 * 255)) << 8) + \
-			((int)(0.718 * 255));
-		data->b = (((int)(0.659 * 255)) << 16) + (((int)(0.438 * 255)) << 8) + \
-			((int)(0.328 * 255));
-		data->c = (((int)(0.388 * 255)) << 16) + (((int)(0.388 * 255)) << 8) + \
-			((int)(0.296 * 255));
-		data->d = (((int)(2.538 * 255)) << 16) + (((int)(2.478 * 255)) << 8) + \
-			((int)(0.168 * 255));
-	}
-	if (key == XK_6)
-	{
-		data->a = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(125.5));
-		data->b = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(125.5));
-		data->c = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(85));
-		data->d = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(170));
-	}
-	julia_or_mandelbrot(data);
-	if (data->win_ptr2 != NULL)
-		second_julia_set(data, data->lr, data->li);
-}
 
 void	key_hook_aux(int key, t_mlx_data *data)
 {
@@ -110,8 +84,8 @@ int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 	if (key == 2)
 		julia_or_mandelbrot(data);
 	if (key == 2 && !check_color(&data->img, rx, ry) && data->x_mult == 2.65)
-		draw_orbit(data, (((rx - 94) * data->x_mult / WIDTH) - data->x_cords)
-			/ 1.124, data->y_cords - ((ry * data->y_mult) / HIGHT));
+		draw_orbit(data, (((rx) * data->x_mult / WIDTH) - data->x_cords)
+			, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	mouse_hook_aux(key, x, y, data);
 	return (0);
 }

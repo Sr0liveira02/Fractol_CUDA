@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   a.c                                                :+:      :+:    :+:   */
+/*   zoom_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:57:21 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 16:58:53 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:58:31 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	mouse_zoom(t_mlx_data *data, int x, int y, int flag)
 
 	rx = x;
 	ry = y;
-	data->x_cords += flag * ((data->x_mult / 10) * (rx / WIDTH) / 1.124);
+	data->x_cords += flag * ((data->x_mult / 10) * (rx / WIDTH));
 	data->y_cords += flag * (data->y_mult / 10) * (ry / HIGHT);
 	data->x_mult += flag * (data->x_mult / 10);
 	data->y_mult += flag * (data->y_mult / 10);

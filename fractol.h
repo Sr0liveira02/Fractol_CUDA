@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 16:54:59 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:15:51 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 #  define HIGHT 1000
 # endif
 # ifndef WIDTH
-#  define WIDTH HIGHT * 2.65 / 2.5
+#  define WIDTH 1060
 # endif
 
-#include "mlx_linux/mlx_int.h"
-#include "mlx_linux/mlx.h"
-#include "my_libft/libft.h"
-#include <math.h>
+# include "mlx_linux/mlx_int.h"
+# include "mlx_linux/mlx.h"
+# include "my_libft/libft.h"
+# include <math.h>
 
 typedef struct s_comp
 {
@@ -49,21 +49,20 @@ typedef struct s_image
 	char	*pixel_ptr;
 }	t_image;
 
-
 typedef struct s_mlx_data
 {
 	int		col;
 	int		flag;
-	int 	ac;
+	int		ac;
 	int		sc;
 	double	a;
 	double	b;
 	double	c;
 	double	d;
-	double 	x_mult;
-	double 	y_mult;
-	double 	y_cords;
-	double 	x_cords;
+	double	x_mult;
+	double	y_mult;
+	double	y_cords;
+	double	x_cords;
 	double	i;
 	double	real;
 	void	*win_ptr;
@@ -102,5 +101,6 @@ void	restart_data(t_mlx_data *data, int ac, char **av);
 int		exit_func(t_mlx_data *data);
 int		go_func(t_mlx_data *data, double x, double y);
 void	key_hook_aux(int key, t_mlx_data *data);
+void	color_code(int key, t_mlx_data *data);
 
 #endif

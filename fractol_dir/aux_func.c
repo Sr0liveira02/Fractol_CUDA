@@ -6,11 +6,37 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:46:46 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 16:59:42 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:58:41 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fractol.h"
+
+void	color_code(int key, t_mlx_data *data)
+{
+	data->col = key;
+	if (key == XK_7)
+	{
+		data->a = (((int)(0.938 * 255)) << 16) + (((int)(0.328 * 255)) << 8) + \
+			((int)(0.718 * 255));
+		data->b = (((int)(0.659 * 255)) << 16) + (((int)(0.438 * 255)) << 8) + \
+			((int)(0.328 * 255));
+		data->c = (((int)(0.388 * 255)) << 16) + (((int)(0.388 * 255)) << 8) + \
+			((int)(0.296 * 255));
+		data->d = (((int)(2.538 * 255)) << 16) + (((int)(2.478 * 255)) << 8) + \
+			((int)(0.168 * 255));
+	}
+	if (key == XK_6)
+	{
+		data->a = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(125.5));
+		data->b = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(125.5));
+		data->c = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(85));
+		data->d = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(170));
+	}
+	julia_or_mandelbrot(data);
+	if (data->win_ptr2 != NULL)
+		second_julia_set(data, data->lr, data->li);
+}
 
 void	restart_data(t_mlx_data *data, int ac, char **av)
 {
