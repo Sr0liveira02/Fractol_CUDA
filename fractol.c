@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 15:04:37 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 15:04:52 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,7 +382,7 @@ int	key_hook(int key, t_mlx_data *data)
 	if (key > XK_0 && key <= XK_7)
 		color_code(key, data);
 	if (key == XK_KP_Multiply)
-		data->sc += 50g;
+		data->sc += 50;
 	if (key == XK_KP_Divide && data->sc > 50)
 		data->sc -= 50;
 	mlx_put_image_to_window(data->mlx_ptr,
