@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:59:55 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 20:22:34 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 	return (0);
 }
 
+int	close_window(void *data)
+{
+	exit_func(data);
+	return (0);
+}
+
 int	main(int ac, char **av)
 {
 	t_mlx_data	data;
@@ -99,5 +105,6 @@ int	main(int ac, char **av)
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
 	mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
 	julia_or_mandelbrot(&data);
+	mlx_hook(data.win_ptr, 17, 0l, exit_func, &data);
 	mlx_loop(data.mlx_ptr);
 }
