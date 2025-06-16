@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/15 20:16:18 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 01:57:21 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ typedef struct s_comp
 {
 	double	real;
 	double	i;
+	double	c_real;
+	double	c_i;
+	double	z_real;
+	double	z_i;
 	double	r_min;
 	double	r_max;
 	double	i_min;
@@ -48,6 +52,7 @@ typedef struct s_image
 
 typedef struct s_mlx_data
 {
+	int		color;
 	int		flag;
 	int 	ac;
 	double 	x_mult;
@@ -64,10 +69,11 @@ typedef struct s_mlx_data
 	double	li;
 	t_image	img;
 	t_image	img2;
+	t_comp	n;
 }	t_mlx_data;
 
 int	Julia_set(t_mlx_data *data);
 int	Mandelbrot(t_mlx_data *data);
-int	fractol_formula(double z_real, double z_i, double c_real, double c_i);
+int	fractol_formula(t_mlx_data *data);
 
 #endif

@@ -6,28 +6,108 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 00:18:44 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/16 02:55:46 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
-int	fractol_formula(double z_real, double z_i, double c_real, double c_i)
+int	colors_blue(float t)
 {
-	float		ind;
-	double		real;
+	int	r;
+	int	g;
+	int	b;
 
-	ind = -1;
+	r = 9 * (1 - t) * t * t * t * 255;
+	g = 16 * (1 - t) * (1 - t) * t * t * 255;
+	b = 8 * (1 - t) * (1 - t) * (1 - t) * t * 255;
+	return (b);
+}
+
+int	colors_red(float t)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = 9 * (1 - t) * t * t * t * 255;
+	g = 16 * (1 - t) * (1 - t) * t * t * 255;
+	b = 8 * (1 - t) * (1 - t) * (1 - t) * t * 255;
+	return (b << 16);
+}
+int	colors_green(float t)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = 9 * (1 - t) * t * t * t * 255;
+	g = 16 * (1 - t) * (1 - t) * t * t * 255;
+	b = 8 * (1 - t) * (1 - t) * (1 - t) * t * 255;
+	return (b << 8);
+}
+
+int	colors_wtf(float t)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	r = 9 * (1 - t) * t * t * t * 255;
+	g = 16 * (1 - t) * (1 - t) * t * t * 255;
+	b = 8 * (1 - t) * (1 - t) * (1 - t) * t * 255;
+	return (r + g + b << 4);
+}
+
+int	fractol_formula(t_mlx_data *data)
+{
+	double	ind;
+	double	real;
+
+	ind = 0;
 	while (ind++ < 100)
 	{
-		real = (z_real * z_real) - (z_i * z_i) + c_real;
-		z_i = (z_real * z_i * 2) + c_i;
-		z_real = real;
-		if ((z_real * z_real) + (z_i * z_i) > 4)
-			return (16581375 * (1 / ind));
+		real = (data->n.z_real * data->n.z_real) - (data->n.z_i * data->n.z_i) + data->n.c_real;
+		data->n.z_i = (data->n.z_real * data->n.z_i * 2) + data->n.c_i;
+		data->n.z_real = real;
+		if ((data->n.z_real * data->n.z_real) + (data->n.z_i * data->n.z_i) > 100)
+		{
+			if (data->color == XK_1)
+				return ((ind / 100) * 16777216);
+			else if (data->color == XK_2)
+				return ((1 - (ind / 100)) * 16777216);
+			else if (data->color == XK_3)
+				return ((ind / 100) * 255);
+			else if (data->color == XK_4)
+				return ((int)(((ind / 100)) * 255) << 4);
+			else if (data->color == XK_5)
+				return ((int)(((ind / 100)) * 255) << 12);
+			else if (data->color == XK_6)
+				return (colors_wtf((ind / 100)));
+		}
 	}
 	return (0);
 }
+
+// int	fractol_formula(double z_real, double z_i, double c_real, double c_i)
+// {
+	// long double	ind;
+	// double		real;
+// 
+	// ind = 0;
+	// while (ind++ < 100)
+	// {
+		// real = (z_real * z_real) - (z_i * z_i) + c_real;
+		// z_i = (z_real * z_i * 2) + c_i;
+		// z_real = real;
+		// if ((z_real * z_real) + (z_i * z_i) > 4)
+			// return (((ind / 100)) * 16777215);
+	// }
+	// return (0);
+// }
 
 void	restart_data(t_mlx_data *data, int ac, char **av)
 {
@@ -35,6 +115,7 @@ void	restart_data(t_mlx_data *data, int ac, char **av)
 	data->x_mult = 2.65;
 	data->y_mult =  2.5;
 	data->y_cords = 1.25;
+	data->color = XK_1;
 	if (ac == 3)
 	{
 		data->real = atof(av[1]);
@@ -102,9 +183,11 @@ int	Julia_set(t_mlx_data *data)
 		x = -1;
 		while (++x < w)
 		{
-			my_put_pixel(&data->img, x, y, 
-				fractol_formula(((x * data->x_mult / w)) - data->x_cords,
-				data->y_cords - ((y * data->y_mult) / h), data->real, data->i));
+			data->n.z_real = ((x * data->x_mult / w)) - data->x_cords;
+			data->n.z_i = data->y_cords - ((y * data->y_mult) / h);
+			data->n.c_real = data->real;
+			data->n.c_i = data->i;
+			my_put_pixel(&data->img, x, y, fractol_formula(data));
 		}
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0 , 0);
@@ -126,9 +209,11 @@ int	Mandelbrot(t_mlx_data *data)
 		x = -1;
 		while (++x < w)
 		{
-			my_put_pixel(&data->img, x, y, 
-				fractol_formula(0, 0, ((x * data->x_mult / w)) - data->x_cords,
-				data->y_cords - ((y * data->y_mult) / h)));
+			data->n.z_real = 0;
+			data->n.z_i = 0;
+			data->n.c_real = ((x * data->x_mult / w)) - data->x_cords;
+			data->n.c_i = data->y_cords - ((y * data->y_mult) / h);
+			my_put_pixel(&data->img, x, y, fractol_formula(data));
 		}
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0 , 0);
@@ -151,11 +236,21 @@ int	go_func(t_mlx_data *data, double x, double y)
 	w = WIDTH;
 	h = HIGHT;
 	if (data->flag)
-		return (fractol_formula(((x * data->x_mult / w)) - data->x_cords,
-		data->y_cords- ((y * data->y_mult) / h), data->real, data->i));
+	{
+		data->n.z_real = ((x * data->x_mult / w)) - data->x_cords;
+		data->n.z_i = data->y_cords - ((y * data->y_mult) / h);
+		data->n.c_real = data->real;
+		data->n.c_i = data->i;
+		return (fractol_formula(data));
+	}
 	else
-		return (fractol_formula(0, 0, ((x * data->x_mult / w)) - data->x_cords,
-		data->y_cords- ((y * data->y_mult) / h)));
+	{
+		data->n.z_real = 0;
+		data->n.z_i = 0;
+		data->n.c_real = ((x * data->x_mult / w)) - data->x_cords;
+		data->n.c_i = data->y_cords - ((y * data->y_mult) / h);
+		return (fractol_formula(data));
+	}
 }
 
 void	go_up(t_mlx_data *data, int divide)
@@ -302,6 +397,11 @@ int	key_hook(int keysym, t_mlx_data *data)
 		zoom(data, 1);
 	if (keysym == XK_KP_Subtract)
 		zoom(data, -1);
+	if (keysym > XK_0 && keysym <= XK_6)
+	{
+		data->color = keysym;
+		Julia_or_Mandelbrot(data);
+	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.img_ptr, 0 , 0);
 	return (0);
 }
@@ -339,9 +439,11 @@ int	second_Julia_set(t_mlx_data *data, float r, float i)
 		x = -1;
 		while (++x < w)
 		{
-			my_put_pixel(&data->img2, x, y, 
-				fractol_formula(((x * data->x_mult / w)) - 1.325,
-				data->y_cords - ((y * data->y_mult) / h), r, i));
+			data->n.z_real = ((x * data->x_mult / w)) - 1.325;
+			data->n.z_i = data->y_cords - ((y * data->y_mult) / h);
+			data->n.c_real = r;
+			data->n.c_i = i;
+			my_put_pixel(&data->img2, x, y, fractol_formula(data));
 		}
 	}
 	mlx_put_image_to_window(data->mlx_ptr, data->win_ptr2, data->img2.img_ptr, 0 , 0);
@@ -474,7 +576,7 @@ int	mouse_hook(int keysym, int x, int y, t_mlx_data *data)
 
 	rx = x;
 	ry = y;
-	if (keysym == 0 && data->flag == 0)
+	if (keysym == 1 && data->flag == 0)
 	{
 		if (data->win_ptr2 == NULL)
 			data->win_ptr2 = mlx_new_window(data->mlx_ptr, WIDTH, HIGHT, "Julia_set");
@@ -483,9 +585,9 @@ int	mouse_hook(int keysym, int x, int y, t_mlx_data *data)
 		printf("%f %f\n", data->lr, data->li);
 		second_Julia_set(data, (rx * data->x_mult / WIDTH) - data->x_cords, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	}
-	if (keysym == 1)
+	if (keysym == 2)
 		Julia_or_Mandelbrot(data);
-	if (keysym == 1  && !check_color(&data->img, rx, ry))
+	if (keysym == 2  && !check_color(&data->img, rx, ry))
 		draw_orbit(data, (((rx - 94)* data->x_mult / WIDTH) - data->x_cords) / 1.124, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	if (keysym == 3 && data->flag == 0 && data->win_ptr2)
 	{
