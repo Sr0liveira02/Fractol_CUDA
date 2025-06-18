@@ -6,21 +6,21 @@
 #    By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/12 13:07:24 by jlima-so          #+#    #+#              #
-#    Updated: 2025/06/16 12:30:25 by jlima-so         ###   ########.fr        #
+#    Updated: 2025/06/18 12:16:46 by jlima-so         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-MLB_DIR=			mlx_linux/
+MLB_DIR=			mini-libx/
 
 MLB_FILE=			$(wildcard ${MLB_DIR}*.c)
 
 MLB_OBJ=			${MLB_FILE:.c=.o}
 
-MLBLIB=				mlx_linux/libmlx_Linux.a
+MLBLIB=				mini-libx/libmlx_Linux.a
 
-MLBMAC=				mlx_linux/libmlx.a
+MLBMAC=				mini-libx/libmlx.a
 
-MLX_LINUX_FLAGS=	-Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+MLX_LINUX_FLAGS=	-Lmini-libx -lmlx_Linux -L/usr/lib -Imini-libx -lXext -lX11 -lm -lz
 
 MLX_MAC_FLAGS=		
 
@@ -71,10 +71,10 @@ HD=
 all: ${PROJ}
 
 ${MLBLIB}:
-	cd mlx_linux && make
+	cd mini-libx && make
 
 ${MLBMAC}:
-	cd mlx_linux && make
+	cd mini-libx && make
 
 ${NAME}: ${OBJ_FILES}
 	${AR} ${NAME} $?

@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/18 11:57:24 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:30:42 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # include "mini-libx/mlx_int.h"
 # include "mini-libx/mlx.h"
+# include "my_libft/libft.h"
 # include <math.h>
 
 typedef struct s_comp
@@ -36,7 +37,6 @@ typedef struct s_comp
 	double	r_max;
 	double	i_min;
 	double	i_max;
-
 }	t_comp;
 
 typedef struct s_image

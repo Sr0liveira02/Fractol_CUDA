@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:46:46 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:58:41 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:26:51 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	restart_data(t_mlx_data *data, int ac, char **av)
 	data->y_cords = 1.25;
 	if (av != NULL)
 		data->col = XK_1;
-	data->sc = 150;
-	if (ac == 3)
+	data->sc = 50;
+	if (ac == 4)
 	{
 		data->real = atof(av[1]);
 		data->i = atof(av[2]);

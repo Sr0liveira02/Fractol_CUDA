@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/17 12:32:44 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/18 13:29:43 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	key_hook(int key, t_mlx_data *data)
 {
 	if (key == XK_Escape)
 		exit_func(data);
-	if (key == XK_space)
-		restart_data(data, data->ac, NULL);
-	if (key == XK_space)
+	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
+		restart_data(data, data->ac, data->av);
+	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
 		julia_or_mandelbrot(data);
 	key_hook_aux(key, data);
 	if (key > XK_0 && key <= XK_7)
@@ -97,10 +97,68 @@ int	close_window(void *data)
 	return (0);
 }
 
+void	print_loc()
+{
+	write(2, "You can use:\n\t'Mandelbrot' to print a Mandelbrot set.\n", 55);
+	write(2, "\t'Julia' and the cordinates of the complex number", 50);
+	write(2, " (without letters) to print a Julia set\n", 41);
+	exit (1);
+}
+
+void	print_nbr_semantic(char *av)
+{
+	write (2, "Wrong number semantic, bad use of '", 36);
+	write (2, av, 1);
+	write (2, "'.\n", 4);
+	exit(1);
+}
+
+void	check_semantic(char *av)
+{
+	int	ind;
+
+	ind = 0;
+	while ((av[ind] >= 9 && av[ind] <= 13) || av[ind] == 32)
+		ind++;
+	if (av[ind] == '\0')
+		write (2, "no number found.\n", 18);
+	if (av[ind] == '\0')
+		exit(1);
+	if (av[ind] == '\0')
+		print_nbr_semantic(av + ind);
+	if ((av[ind] == '+' || av[ind] == '-'))
+		ind++;
+	if (av[ind] < '0' && av[ind] > '9')
+		print_nbr_semantic(av + ind);
+	while (av[ind] >= '0' && av[ind] <= '9')
+		ind++;
+	if (av[ind] == '.' || av[ind] == ',')
+		ind++;
+	while (av[ind] >= '0' && av[ind] <= '9')
+		ind++;
+	if (av[ind] != '\0')
+		print_nbr_semantic(av + ind);
+}
+
+void	parse(int ac, char** av)
+{
+	if (ac == 1 || ac == 3 || ac > 4)
+		print_loc();
+	if (ac == 2 && strncmp(av[1], "Mandelbrot", 11))
+		print_loc();
+	if (ac == 1 && strncmp(av[1], "Mandelbrot", 11) == 0)
+		return ;
+	if (ac == 4 && strncmp(av[1], "Julia", 10))
+		print_loc();
+	while (--ac > 1)
+		check_semantic(av[ac]);
+}
+
 int	main(int ac, char **av)
 {
 	t_mlx_data	data;
 
+	parse(ac, av);
 	restart_data(&data, ac, av);
 	init_fractol(&data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
