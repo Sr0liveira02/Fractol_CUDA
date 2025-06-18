@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/17 12:33:23 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/18 11:57:24 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 #  define WIDTH 1060
 # endif
 
-# include "mlx_linux/mlx_int.h"
-# include "mlx_linux/mlx.h"
+# include "mini-libx/mlx_int.h"
+# include "mini-libx/mlx.h"
 # include <math.h>
 
 typedef struct s_comp
