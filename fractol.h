@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:15:51 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:33:23 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 
 # include "mlx_linux/mlx_int.h"
 # include "mlx_linux/mlx.h"
-# include "my_libft/libft.h"
 # include <math.h>
 
 typedef struct s_comp

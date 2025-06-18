@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/17 11:55:18 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:32:44 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,11 @@ int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 		if (data->win_ptr2 == NULL)
 			data->win_ptr2 = \
 				mlx_new_window(data->mlx_ptr, WIDTH, HIGHT, "julia_set");
-		data->lr = (((rx - 94) * data->x_mult / WIDTH) - data->x_cords) / 1.124;
+		data->lr = ((rx * data->x_mult / WIDTH) - data->x_cords);
 		data->li = data->y_cords - ((ry * data->y_mult) / HIGHT);
 		second_julia_set(data,
-			(((rx - 94) * data->x_mult / WIDTH) - data->x_cords)
-			/ 1.124, data->y_cords - ((ry * data->y_mult) / HIGHT));
+			((rx * data->x_mult / WIDTH) - data->x_cords)
+			, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	}
 	if (key == 2)
 		julia_or_mandelbrot(data);
