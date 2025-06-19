@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:50:18 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:58:40 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/18 22:37:32 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	go_left(t_mlx_data *data, int divide)
 	h = HIGHT;
 	y = 0;
 	data->x_cords -= (data->x_mult / divide);
-	while (y < h)
+	while (y <= h)
 	{
 		x = 0;
 		while (x < w * 9 / 10)
@@ -96,7 +96,7 @@ void	go_right(t_mlx_data *data, int divide)
 	h = HIGHT;
 	y = 0;
 	data->x_cords += (data->x_mult / divide);
-	while (y < h)
+	while (y <= h)
 	{
 		x = w + 1;
 		while (--x > w / 10)
@@ -115,13 +115,12 @@ int	go_func(t_mlx_data *data, double x, double y)
 
 	w = WIDTH;
 	h = HIGHT;
-	if (data->flag)
+	if (data->flag == 1)
 	{
 		data->n.z_r = ((x * data->x_mult / w)) - data->x_cords;
 		data->n.z_i = data->y_cords - ((y * data->y_mult) / h);
 		data->n.c_r = data->real;
 		data->n.c_i = data->i;
-		return (fractol_formula(data));
 	}
 	else
 	{
@@ -129,6 +128,8 @@ int	go_func(t_mlx_data *data, double x, double y)
 		data->n.z_i = 0;
 		data->n.c_r = ((x * data->x_mult / w)) - data->x_cords;
 		data->n.c_i = data->y_cords - ((y * data->y_mult) / h);
-		return (fractol_formula(data));
 	}
+	if (data->flag == 0 || data->flag == 1)
+		return (fractol_formula(data));
+	return (bs_fractol_formula(data));
 }

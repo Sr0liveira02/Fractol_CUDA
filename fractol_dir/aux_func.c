@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:46:46 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/18 13:26:51 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:59:58 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,32 @@ void	color_code(int key, t_mlx_data *data)
 		second_julia_set(data, data->lr, data->li);
 }
 
-void	restart_data(t_mlx_data *data, int ac, char **av)
+void	restart_data(t_mlx_data *data, int ac, char **av, int i)
 {
 	data->av = av;
 	data->x_mult = 2.65;
 	data->y_mult = 2.5;
 	data->y_cords = 1.25;
-	if (av != NULL)
+	if (i == 0)
 		data->col = XK_1;
 	data->sc = 50;
-	if (ac == 4)
-	{
-		data->real = atof(av[1]);
-		data->i = atof(av[2]);
-		data->flag = 1;
-		data->x_cords = 1.325;
-		return ;
-	}
 	data->x_cords = 2.1;
 	data->real = 0;
 	data->i = 0;
 	data->flag = 0;
+	if (ft_strncmp(av[1], "Burning_ship", 13) == 0)
+	{
+		data->flag = 2;
+		data->x_cords = 3;
+		data->y_cords = 1.25;
+	}
+	if (ft_strncmp(av[1], "Julia", 6) == 0 && ac == 3)
+	{
+		data->real = ft_atof(av[2]);
+		data->i = ft_atof(av[3]);
+		data->flag = 1;
+		data->x_cords = 1.325;
+	}
 }
 
 int	exit_func(t_mlx_data *data)

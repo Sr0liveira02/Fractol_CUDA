@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:51:48 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:58:37 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:45:26 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,12 @@ int	mandelbrot(t_mlx_data *data)
 
 void	julia_or_mandelbrot(t_mlx_data *data)
 {
-	if (data->flag)
+	if (data->flag == 1)
 		julia_set(data);
-	else
+	else if (data->flag == 0)
 		mandelbrot(data);
+	else
+		burning_ship(data);
 }
 
 int	second_julia_set(t_mlx_data *data, float r, float i)

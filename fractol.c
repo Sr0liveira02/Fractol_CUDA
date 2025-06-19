@@ -6,34 +6,56 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/18 13:29:43 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/19 16:59:17 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	key_hook_aux(int key, t_mlx_data *data)
+void	burning_ship_go(t_mlx_data *data, double x)
 {
-	if (key == XK_Down)
+	if (x == 1)
+		data->x_cords += data->x_mult / 10;
+	if (x == 0)
+		data->x_cords -= data->x_mult / 10;
+	if (x == 3)
+		data->y_cords += data->y_mult / 10;
+	if (x == 2)
+		data->y_cords -= data->y_mult / 10;
+	return (burning_ship(data));
+}
+
+void	key_hook_aux(int k, t_mlx_data *data)
+{
+	if (k == XK_Down  && data->flag != 2)
 		go_up(data, 10);
-	if (key == XK_Up)
+	if (k == XK_Up  && data->flag != 2)
 		go_down(data, 10);
-	if (key == XK_Right)
+	if (k == XK_Right  && data->flag != 2)
 		go_left(data, 10);
-	if (key == XK_Left)
+	if (k == XK_Left  && data->flag != 2)
 		go_right(data, 10);
-	if (key == XK_KP_Add)
+	if (k == XK_Up && data->flag == 2)
+		burning_ship_go(data, 2);
+	if (k == XK_Down && data->flag == 2)
+		burning_ship_go(data, 3);
+	if (k == XK_Left && data->flag == 2)
+		burning_ship_go(data, 0);
+	if (k == XK_Right && data->flag == 2)
+		burning_ship_go(data, 1);
+	if (k == XK_KP_Add)
 		zoom(data, 1);
-	if (key == XK_KP_Subtract)
+	if (k == XK_KP_Subtract)
 		zoom(data, -1);
 }
 
 int	key_hook(int key, t_mlx_data *data)
 {
 	if (key == XK_Escape)
-		exit_func(data);
+
+	exit_func(data);
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
-		restart_data(data, data->ac, data->av);
+		restart_data(data, data->ac, data->av, 1);
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
 		julia_or_mandelbrot(data);
 	key_hook_aux(key, data);
@@ -58,7 +80,7 @@ void	mouse_hook_aux(int key, int x, int y, t_mlx_data *data)
 		julia_set(data);
 	}
 	if (key == 4)
-		mouse_zoom(data, x, y, -1);
+	mouse_zoom(data, x, y, -1);
 	if (key == 5)
 		mouse_zoom(data, x, y, 1);
 }
@@ -144,10 +166,8 @@ void	parse(int ac, char** av)
 {
 	if (ac == 1 || ac == 3 || ac > 4)
 		print_loc();
-	if (ac == 2 && strncmp(av[1], "Mandelbrot", 11))
+	if (ac == 2 && (strncmp(av[1], "Mandelbrot", 11) == 0 && strncmp(av[1], "Burning_ship", 11) == 0))
 		print_loc();
-	if (ac == 1 && strncmp(av[1], "Mandelbrot", 11) == 0)
-		return ;
 	if (ac == 4 && strncmp(av[1], "Julia", 10))
 		print_loc();
 	while (--ac > 1)
@@ -159,7 +179,7 @@ int	main(int ac, char **av)
 	t_mlx_data	data;
 
 	parse(ac, av);
-	restart_data(&data, ac, av);
+	restart_data(&data, ac, av, 0);
 	init_fractol(&data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
 	mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
