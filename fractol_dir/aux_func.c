@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:46:46 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/19 16:59:58 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:07:20 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	color_code(int key, t_mlx_data *data)
 		data->c = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(85));
 		data->d = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(170));
 	}
-	julia_or_mandelbrot(data);
+	j_m_bs(data);
 	if (data->win_ptr2 != NULL)
 		second_julia_set(data, data->lr, data->li);
 }
 
-void	restart_data(t_mlx_data *data, int ac, char **av, int i)
+void	restart_data(t_mlx_data *data, char **av, int i)
 {
 	data->av = av;
 	data->x_mult = 2.65;
@@ -57,7 +57,7 @@ void	restart_data(t_mlx_data *data, int ac, char **av, int i)
 		data->x_cords = 3;
 		data->y_cords = 1.25;
 	}
-	if (ft_strncmp(av[1], "Julia", 6) == 0 && ac == 3)
+	if (ft_strncmp(av[1], "Julia", 6) == 0)
 	{
 		data->real = ft_atof(av[2]);
 		data->i = ft_atof(av[3]);

@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:45:49 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/18 22:49:43 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:06:14 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ int		fractol_formula(t_mlx_data *data);
 int		julia_set(t_mlx_data *data);
 int		mandelbrot(t_mlx_data *data);
 int		second_julia_set(t_mlx_data *data, float r, float i);
-void	julia_or_mandelbrot(t_mlx_data *data);
+void	j_m_bs(t_mlx_data *data);
 void	mouse_zoom(t_mlx_data *data, int x, int y, int flag);
-void	restart_data(t_mlx_data *data, int ac, char **av, int i);
+void	restart_data(t_mlx_data *data, char **av, int i);
 int		exit_func(t_mlx_data *data);
 int		go_func(t_mlx_data *data, double x, double y);
 void	key_hook_aux(int key, t_mlx_data *data);

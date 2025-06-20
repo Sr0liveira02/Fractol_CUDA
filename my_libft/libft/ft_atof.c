@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 12:14:12 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/16 17:06:07 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/20 12:27:10 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ float	ft_atof(const char *str)
 	num = 0;
 	while ((*str >= 9 && *str <= 13) || *str == 32)
 		str++;
+	if (*str == '-')
+		sign = -sign;
 	if (*str == '+' || *str == '-')
-	{
-		if (*str == '-')
-			sign = -sign;
 		str++;
-	}
+	while (*str >= '0' && *str <= '9')
+		num = num * 10 + (*str++ - 48) * (sign);
+	str += (*str >= '.' || *str <= ',');
 	while (*str >= '0' && *str <= '9')
 	{
 		num = num * 10 + (*str++ - 48) * (sign);
 		loop++;
 	}
-	if (*str >= '.' || *str <= ',')
-		while (loop--)
-			num = num / 10;
+	while (loop--)
+		num = num / 10;
 	return (num);
 }
 

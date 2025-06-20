@@ -6,7 +6,7 @@
 #    By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/12 13:07:24 by jlima-so          #+#    #+#              #
-#    Updated: 2025/06/18 12:16:46 by jlima-so         ###   ########.fr        #
+#    Updated: 2025/06/20 13:09:00 by jlima-so         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,22 +82,22 @@ ${NAME}: ${OBJ_FILES}
 ${LIBFT}: ${OBJ_LIB}
 	cd my_libft && make
 
-${BONUS_ARQ}: ${OBJ_BONUS}
-	${AR} ${BONUS_ARQ} $?
+#${BONUS_ARQ}: ${OBJ_BONUS}
+#	${AR} ${BONUS_ARQ} $?
 
 ${PROJ}: ${NAME} ${LIBFT} ${PROJ}.c ${HDR_FILE} ${MLBLIB}
 	${CC} ${CFLAGS} ${PROJ}.c ${NAME} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ}
 
-${PROJ_BONUS}: ${NAME} ${LIBFT} ${BONUS_ARQ} ${PROJ_BONUS}.c ${HDR_FILE} ${MLBLIB}
-	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ_BONUS}
+#${PROJ_BONUS}: ${NAME} ${LIBFT} ${BONUS_ARQ} ${PROJ_BONUS}.c ${HDR_FILE} ${MLBLIB}
+#	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ_BONUS}
 
-mac: ${NAME} ${LIBFT} ${PROJ}.c ${HDR_FILE}
-	${CC} ${CFLAGS} ${PROJ}.c ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ}
-	touch mac
+#mac: ${NAME} ${LIBFT} ${PROJ}.c ${HDR_FILE}
+#	${CC} ${CFLAGS} ${PROJ}.c ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ}
+#	touch mac
 
-mac_bonus: ${NAME} ${LIBFT} ${BONUS_ARQ} ${PROJ_BONUS}.c ${HDR_FILE}
-	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ_BONUS}
-	touch mac_bonus
+#mac_bonus: ${NAME} ${LIBFT} ${BONUS_ARQ} ${PROJ_BONUS}.c ${HDR_FILE}
+#	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ_BONUS}
+#	touch mac_bonus
 
 %o: %c
 	${CC} ${CFLAGS} -I/usr/include -O3 -c $< -o $@
@@ -106,7 +106,7 @@ bonus: ${PROJ_BONUS}
 	@touch bonus
 
 clean:
-	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} bonus
+	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} bonus
 
 fclean: clean
 	rm -f ${NAME} ${LIBFT} ${PROJ} ${PROJ_BONUS} ${MLBMAC} ${MLBLIB}

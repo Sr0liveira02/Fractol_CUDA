@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:51:48 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/19 14:45:26 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:05:27 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	mandelbrot(t_mlx_data *data)
 	return (0);
 }
 
-void	julia_or_mandelbrot(t_mlx_data *data)
+void	j_m_bs(t_mlx_data *data)
 {
 	if (data->flag == 1)
 		julia_set(data);

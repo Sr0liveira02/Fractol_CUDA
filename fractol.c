@@ -6,7 +6,7 @@
 /*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 17:17:36 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/19 16:59:17 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/20 13:05:04 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,22 @@ int	key_hook(int key, t_mlx_data *data)
 
 	exit_func(data);
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
-		restart_data(data, data->ac, data->av, 1);
+		restart_data(data, data->av, 1);
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
-		julia_or_mandelbrot(data);
+		j_m_bs(data);
 	key_hook_aux(key, data);
 	if (key > XK_0 && key <= XK_7)
 		color_code(key, data);
 	if (key == XK_KP_Multiply)
+	{
 		data->sc += 50;
+		j_m_bs(data);
+	}
 	if (key == XK_KP_Divide && data->sc > 50)
+	{
 		data->sc -= 50;
+		j_m_bs(data);
+	}
 	mlx_put_image_to_window(data->mlx_ptr,
 		data->win_ptr, data->img.img_ptr, 0, 0);
 	return (0);
@@ -80,7 +86,7 @@ void	mouse_hook_aux(int key, int x, int y, t_mlx_data *data)
 		julia_set(data);
 	}
 	if (key == 4)
-	mouse_zoom(data, x, y, -1);
+		mouse_zoom(data, x, y, -1);
 	if (key == 5)
 		mouse_zoom(data, x, y, 1);
 }
@@ -105,7 +111,7 @@ int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 			, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	}
 	if (key == 2)
-		julia_or_mandelbrot(data);
+		j_m_bs(data);
 	if (key == 2 && !check_color(&data->img, rx, ry) && data->x_mult == 2.65)
 		draw_orbit(data, (((rx) * data->x_mult / WIDTH) - data->x_cords)
 			, data->y_cords - ((ry * data->y_mult) / HIGHT));
@@ -166,7 +172,9 @@ void	parse(int ac, char** av)
 {
 	if (ac == 1 || ac == 3 || ac > 4)
 		print_loc();
-	if (ac == 2 && (strncmp(av[1], "Mandelbrot", 11) == 0 && strncmp(av[1], "Burning_ship", 11) == 0))
+	if (ac == 2 && (strncmp(av[1], "Mandelbrot", 11) == 0 || strncmp(av[1], "Burning_ship", 11) == 0))
+		return ;
+	else if (ac == 2)
 		print_loc();
 	if (ac == 4 && strncmp(av[1], "Julia", 10))
 		print_loc();
@@ -179,11 +187,11 @@ int	main(int ac, char **av)
 	t_mlx_data	data;
 
 	parse(ac, av);
-	restart_data(&data, ac, av, 0);
+	restart_data(&data, av, 0);
 	init_fractol(&data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
 	mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
-	julia_or_mandelbrot(&data);
+	j_m_bs(&data);
 	mlx_hook(data.win_ptr, 17, 0l, exit_func, &data);
 	mlx_loop(data.mlx_ptr);
 }
