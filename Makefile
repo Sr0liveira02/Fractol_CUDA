@@ -10,17 +10,17 @@
 #                                                                              #
 # **************************************************************************** #
 
-MLB_DIR=			mini-libx/
+MLB_DIR=			minilibx-linux/
 
 MLB_FILE=			$(wildcard ${MLB_DIR}*.c)
 
 MLB_OBJ=			${MLB_FILE:.c=.o}
 
-MLBLIB=				mini-libx/libmlx_Linux.a
+MLBLIB=				minilibx-linux/libmlx_Linux.a
 
-MLBMAC=				mini-libx/libmlx.a
+MLBMAC=				minilibx-linux/libmlx.a
 
-MLX_LINUX_FLAGS=	-Lmini-libx -lmlx_Linux -L/usr/lib -Imini-libx -lXext -lX11 -lm -lz
+MLX_LINUX_FLAGS=	-Lminilibx-linux -lmlx_Linux -L/usr/lib -Iminilibx-linux -lXext -lX11 -lm -lz
 
 MLX_MAC_FLAGS=		
 
@@ -71,10 +71,10 @@ HD=
 all: ${PROJ}
 
 ${MLBLIB}:
-	cd mini-libx && make
+	cd minilibx-linux && make
 
 ${MLBMAC}:
-	cd mini-libx && make
+	cd minilibx-linux && make
 
 ${NAME}: ${OBJ_FILES}
 	${AR} ${NAME} $?
@@ -106,7 +106,7 @@ bonus: ${PROJ_BONUS}
 	@touch bonus
 
 clean:
-	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} ${HDR_FILE} ${MLBLIB} bonus
+	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} bonus
 
 fclean: clean
 	rm -f ${NAME} ${PROJ}

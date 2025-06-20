@@ -20,8 +20,8 @@
 #  define WIDTH 1060
 # endif
 
-# include "mini-libx/mlx_int.h"
-# include "mini-libx/mlx.h"
+# include "minilibx-linux/mlx_int.h"
+# include "minilibx-linux/mlx.h"
 # include "my_libft/libft.h"
 # include <math.h>
 
