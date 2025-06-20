@@ -6,7 +6,7 @@
 #    By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/12 13:07:24 by jlima-so          #+#    #+#              #
-#    Updated: 2025/06/20 13:09:00 by jlima-so         ###   ########.fr        #
+#    Updated: 2025/06/20 13:13:10 by jlima-so         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,10 +106,10 @@ bonus: ${PROJ_BONUS}
 	@touch bonus
 
 clean:
-	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} bonus
+	rm -f ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} ${HDR_FILE} ${MLBLIB} bonus
 
 fclean: clean
-	rm -f ${NAME} ${LIBFT} ${PROJ} ${PROJ_BONUS} ${MLBMAC} ${MLBLIB}
+	rm -f ${NAME} ${PROJ}
 
 re: fclean all
 
