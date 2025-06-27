@@ -70,6 +70,11 @@ HD=
 
 all: ${PROJ}
 
+libx:minilibx-linux
+
+minilibx-linux:
+	git clone https://github.com/42paris/minilibx-linux.git
+
 ${MLBLIB}:
 	cd minilibx-linux && make
 

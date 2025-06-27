@@ -103,5 +103,8 @@ void	key_hook_aux(int key, t_mlx_data *data);
 void	color_code(int key, t_mlx_data *data);
 void	burning_ship(t_mlx_data *data);
 int		bs_fractol_formula(t_mlx_data *data);
+void	burning_ship_go(t_mlx_data *data, double x);
+int		close_window(void *data);
+void	parse(int ac, char **av);
 
 #endif

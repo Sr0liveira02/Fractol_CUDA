@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_fractols.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlima-so <jlima-so@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlima-so <jlima-so@student.42lisba.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 16:51:48 by jlima-so          #+#    #+#             */
-/*   Updated: 2025/06/20 13:05:27 by jlima-so         ###   ########.fr       */
+/*   Updated: 2025/06/21 13:46:20 by jlima-so         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	fractol_formula(t_mlx_data *data)
 		data->n.z_i = (data->n.z_r * data->n.z_i * 2) + data->n.c_i;
 		data->n.z_r = real;
 		if ((data->n.z_r * data->n.z_r) + \
-			(data->n.z_i * data->n.z_i) > data->sc)
+			(data->n.z_i * data->n.z_i) > 4)
 		{
 			if (data->col == XK_1 || data->col == XK_2 || data->col == XK_3)
 				return ((((int)(((ind / data->sc)) * 255))) <<
@@ -120,8 +120,8 @@ int	second_julia_set(t_mlx_data *data, float r, float i)
 		x = -1;
 		while (++x < w)
 		{
-			data->n.z_r = ((x * data->x_mult / w)) - 1.325;
-			data->n.z_i = data->y_cords - ((y * data->y_mult) / h);
+			data->n.z_r = ((x * 2.65 / w)) - 1.325;
+			data->n.z_i = 1.25 - ((y * 2.5) / h);
 			data->n.c_r = r;
 			data->n.c_i = i;
 			my_put_pixel(&data->img2, x, y, fractol_formula(data));
