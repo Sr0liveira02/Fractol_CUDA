@@ -68,18 +68,13 @@ CUDA_OBJ     = $(CUDA_SRC:.cu=.o)
 MAIN_SRC     = fractol.cu
 MAIN_OBJ     = $(MAIN_SRC:.c=.o)
 
+SRC_FILES= $(filter-out ${FRCT_DIR}make_fractols.c, $(wildcard ${FRCT_DIR}*.c))
+
 CUFLAGS = -Xcompiler -Iminilibx-linux -I/usr/include
-
-CPU_SRC_FILES = $(filter-out ${FRCT_DIR}make_fractols.cu, $(wildcard ${FRCT_DIR}*.c))
-CPU_OBJ_FILES = $(CPU_SRC_FILES:.c=.o)
-
-CUDA_SRC_FILES = $(filter-out ${FRCT_DIR}make_fractols.c, $(wildcard ${FRCT_DIR}*.c)) fractol_dir/make_fractols.cu
-CUDA_OBJ_FILES = $(CUDA_SRC_FILES:.c=.o)
-CUDA_OBJ_FILES := $(CUDA_OBJ_FILES:.cu=.o)
 
 AR=ar rcs
 
-CFLAGS=
+CFLAGS= -Wall -Wextra -Werror
 
 HD=
 #-D HIGHT=100
@@ -106,8 +101,8 @@ ${LIBFT}: ${OBJ_LIB}
 #${BONUS_ARQ}: ${OBJ_BONUS}
 #	${AR} ${BONUS_ARQ} $?
 
-${PROJ}: ${CPU_OBJ_FILES} fractol.o ${LIBFT} ${MLBLIB}
-	${CC} ${CFLAGS} fractol.o ${CPU_OBJ_FILES} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ}
+${PROJ}: ${NAME} ${LIBFT} ${PROJ}.c ${HDR_FILE} ${MLBLIB}
+	${CC} ${CFLAGS} ${PROJ}.c ${NAME} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ}
 
 #${PROJ_BONUS}: ${NAME} ${LIBFT} ${BONUS_ARQ} ${PROJ_BONUS}.c ${HDR_FILE} ${MLBLIB}
 #	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -o ${PROJ_BONUS}
@@ -120,26 +115,29 @@ ${PROJ}: ${CPU_OBJ_FILES} fractol.o ${LIBFT} ${MLBLIB}
 #	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ_BONUS}
 #	touch mac_bonus
 
-%.o: %.c
+%o: %c
 	${CC} ${CFLAGS} -I/usr/include -O3 -c $< -o $@
 
 %.o: %.cu
 	${CCUDA} ${CUFLAGS} -c $< -o $@
 
+fractol_dir/make_fractols.o: fractol_dir/make_fractols.cu fractol.h
+	${CCUDA} ${CUFLAGS} -c $< -o $@
+
 fractol.o: fractol.c fractol.h
 	${CC} ${CFLAGS} -c $< -o $@
 
-cuda: fractol_dir/make_fractols.o fractol.o ${CUDA_OBJ_FILES} ${LIBFT} ${MLBLIB}
-	${CC} fractol.o ${CUDA_OBJ_FILES} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} -lcudart -o fractol_cuda
+cuda: fractol.o fractol_dir/make_fractols.o ${OBJ_FILES} ${LIBFT} ${MLBLIB}
+	${CC} fractol.o fractol_dir/make_fractols.o ${OBJ_FILES} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} -lcudart -o fractol_cuda
 
 bonus: ${PROJ_BONUS}
 	@touch bonus
 
 clean:
-	rm -f ${OBJ_FILES} ${CUDA_OBJ} ${CUDA_OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${LIBFT} bonus
+	rm -f ${OBJ_FILES} ${CUDA_OBJ} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} bonus
 
 fclean: clean
-	rm -f ${PROJ}
+	rm -f ${NAME} ${PROJ}
 
 re: fclean all
 

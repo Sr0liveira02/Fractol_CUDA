@@ -2,5 +2,7 @@ minilibx-linux/
 */*.o
 */*/*.o
 *.a
+*.o
 fractol
+fractol_cuda
 

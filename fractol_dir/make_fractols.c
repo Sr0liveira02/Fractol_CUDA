@@ -132,3 +132,11 @@ int	second_julia_set(t_mlx_data *data, float r, float i)
 	(data->mlx_ptr, data->win_ptr2, data->img2.img_ptr, 0, 0);
 	return (0);
 }
+
+void create_matrix(int** matrix) {
+	return;
+}
+
+void delete_matrix(int* matrix) {
+	return;
+}

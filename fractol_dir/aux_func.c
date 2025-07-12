@@ -12,6 +12,10 @@
 
 #include "../fractol.h"
 
+int 	aux_mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr, int x, int y) {
+	return mlx_put_image_to_window(mlx_ptr, win_ptr, img_ptr, x , y);
+}
+
 void	color_code(int key, t_mlx_data *data)
 {
 	data->col = key;
@@ -34,12 +38,13 @@ void	color_code(int key, t_mlx_data *data)
 		data->d = (((int)(0)) << 16) + (((int)(125.5)) << 8) + ((int)(170));
 	}
 	j_m_bs(data);
-	if (data->win_ptr2 != NULL)
-		second_julia_set(data, data->lr, data->li);
+	/*if (data->win_ptr2 != NULL)
+		second_julia_set(data, data->lr, data->li);*/
 }
 
 void	restart_data(t_mlx_data *data, char **av, int i)
 {
+	create_matrix(&data->matrix);
 	data->av = av;
 	data->x_mult = 2.65;
 	data->y_mult = 2.5;
@@ -68,6 +73,7 @@ void	restart_data(t_mlx_data *data, char **av, int i)
 
 int	exit_func(t_mlx_data *data)
 {
+	delete_matrix(data->matrix);
 	if (data->img2.img_ptr)
 		mlx_destroy_image(data->mlx_ptr, data->img2.img_ptr);
 	if (data->img.img_ptr)

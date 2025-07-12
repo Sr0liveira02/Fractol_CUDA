@@ -45,8 +45,8 @@ int	key_hook(int key, t_mlx_data *data)
 	gettimeofday(&start, NULL);
 	if (key == XK_Escape)
 		exit_func(data);
-	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
-		restart_data(data, data->av, 1);
+	/* if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
+		restart_data(data, data->av, 1); */
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
 		j_m_bs(data);
 	key_hook_aux(key, data);
@@ -63,14 +63,14 @@ int	key_hook(int key, t_mlx_data *data)
 		j_m_bs(data);
 	}
 	gettimeofday(&end, NULL);
-	printf("Demorou %ld s a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
+	printf("Demorou %ld ms a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
 	fflush(stdout);
 	mlx_put_image_to_window(data->mlx_ptr,
 		data->win_ptr, data->img.img_ptr, 0, 0);
 	return (0);
 }
 
-void	mouse_hook_aux(int key, int x, int y, t_mlx_data *data)
+/* void	mouse_hook_aux(int key, int x, int y, t_mlx_data *data)
 {
 	if (key == 3 && data->flag == 0 && data->win_ptr2)
 	{
@@ -83,9 +83,9 @@ void	mouse_hook_aux(int key, int x, int y, t_mlx_data *data)
 		mouse_zoom(data, x, y, -1);
 	if (key == 5)
 		mouse_zoom(data, x, y, 1);
-}
+}*/ 
 
-int	mouse_hook(int key, int x, int y, t_mlx_data *data)
+/*int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 {
 	float	rx;
 	float	ry;
@@ -110,7 +110,7 @@ int	mouse_hook(int key, int x, int y, t_mlx_data *data)
 			, data->y_cords - ((ry * data->y_mult) / HIGHT));
 	mouse_hook_aux(key, x, y, data);
 	return (0);
-}
+}*/
 
 int	main(int ac, char **av)
 {
@@ -126,7 +126,7 @@ int	main(int ac, char **av)
 	gettimeofday(&start, NULL);
 	j_m_bs(&data);
 	gettimeofday(&end, NULL);
-	printf("Demorou %ld s a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
+	printf("Demorou %ld ms a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
 	fflush(stdout);
 	mlx_hook(data.win_ptr, 17, 0l, exit_func, &data);
 	mlx_loop(data.mlx_ptr);

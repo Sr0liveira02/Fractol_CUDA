@@ -25,6 +25,10 @@
 # include "my_libft/libft.h"
 # include <math.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct s_comp
 {
 	double	real;
@@ -73,10 +77,13 @@ typedef struct s_mlx_data
 	t_image	img;
 	t_image	img2;
 	t_comp	n;
+	int* matrix;
 }	t_mlx_data;
 
-int		julia_set(t_mlx_data *data);
-int		Mandelbrot(t_mlx_data *data);
+void 	delete_matrix(int* matrix);
+void 	create_matrix(int** matrix);
+// int		julia_set(t_mlx_data *data);
+// int		Mandelbrot(t_mlx_data *data);
 int		fractol_formula(t_mlx_data *data);
 void	draw_orbit(t_mlx_data *data, float c_real, float c_i);
 int		check_color(t_image *img, float x, float y);
@@ -91,8 +98,8 @@ void	data_set(t_mlx_data *data, float rx, float ry);
 void	init_fractol(t_mlx_data *data);
 void	zoom(t_mlx_data *data, int flag);
 int		fractol_formula(t_mlx_data *data);
-int		julia_set(t_mlx_data *data);
-int		mandelbrot(t_mlx_data *data);
+// int		julia_set(t_mlx_data *data);
+// int		mandelbrot(t_mlx_data *data);
 int		second_julia_set(t_mlx_data *data, float r, float i);
 void	j_m_bs(t_mlx_data *data);
 void	mouse_zoom(t_mlx_data *data, int x, int y, int flag);
@@ -106,5 +113,10 @@ int		bs_fractol_formula(t_mlx_data *data);
 void	burning_ship_go(t_mlx_data *data, double x);
 int		close_window(void *data);
 void	parse(int ac, char **av);
+int 	aux_mlx_put_image_to_window(void *mlx_ptr, void *win_ptr, void *img_ptr, int x, int y);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
