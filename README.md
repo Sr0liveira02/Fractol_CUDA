@@ -1,0 +1,22 @@
+# Fractol Viewer
+
+A small project where I explore and visualize fractals using a codebase originally written by [namejojo](https://github.com/namejojo).
+
+## Overview
+
+This application generates mesmerizing fractal visuals using low-level graphics programming in C. It's based on [namejojo's](https://github.com/namejojo/fractol) implementation, with my own tweaks and explorations.
+
+## Requirements
+
+```bash
+sudo apt-get install xorg libxext-dev zlib1g-dev libbsd-dev
+make libx
+make
+```
+
+## Running 
+execute the command to see the options u have to look at the fractals
+
+```bash
+./fractol
+```

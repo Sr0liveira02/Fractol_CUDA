@@ -41,6 +41,7 @@ int	fractol_formula(t_mlx_data *data)
 	return (0);
 }
 
+// efficient
 int	julia_set(t_mlx_data *data)
 {
 	double	x;

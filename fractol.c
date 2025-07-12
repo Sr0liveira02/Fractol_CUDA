@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "fractol.h"
+#include "sys/time.h"
 
+// new frame
 void	key_hook_aux(int k, t_mlx_data *data)
 {
 	if (k == XK_Down && data->flag != 2)
@@ -38,6 +40,9 @@ void	key_hook_aux(int k, t_mlx_data *data)
 
 int	key_hook(int key, t_mlx_data *data)
 {
+	struct timeval start;
+	struct timeval end;
+	gettimeofday(&start, NULL);
 	if (key == XK_Escape)
 		exit_func(data);
 	if (key == XK_space && ft_strncmp(data->av[1], "Julia", 6))
@@ -57,6 +62,9 @@ int	key_hook(int key, t_mlx_data *data)
 		data->sc -= 50;
 		j_m_bs(data);
 	}
+	gettimeofday(&end, NULL);
+	printf("Demorou %ld s a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
+	fflush(stdout);
 	mlx_put_image_to_window(data->mlx_ptr,
 		data->win_ptr, data->img.img_ptr, 0, 0);
 	return (0);
@@ -112,8 +120,14 @@ int	main(int ac, char **av)
 	restart_data(&data, av, 0);
 	init_fractol(&data);
 	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, key_hook, &data);
-	mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
+	// mlx_hook(data.win_ptr, ButtonPress, ButtonPressMask, mouse_hook, &data);
+	struct timeval start;
+	struct timeval end;
+	gettimeofday(&start, NULL);
 	j_m_bs(&data);
+	gettimeofday(&end, NULL);
+	printf("Demorou %ld s a dar load a imagem\n", (1000000 * (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec)) / 1000);
+	fflush(stdout);
 	mlx_hook(data.win_ptr, 17, 0l, exit_func, &data);
 	mlx_loop(data.mlx_ptr);
 }

@@ -45,8 +45,8 @@ void	restart_data(t_mlx_data *data, char **av, int i)
 	data->y_mult = 2.5;
 	data->y_cords = 1.25;
 	if (i == 0)
-		data->col = XK_1;
-	data->sc = 50;
+		data->col = XK_5;
+	data->sc = 5000;
 	data->x_cords = 2.1;
 	data->real = 0;
 	data->i = 0;

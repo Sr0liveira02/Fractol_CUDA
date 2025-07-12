@@ -1,0 +1,6 @@
+minilibx-linux/
+*/*.o
+*/*/*.o
+*.a
+fractol
+
