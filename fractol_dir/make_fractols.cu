@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../fractol.h"
+#include "sys/time.h"
 
 __host__ int 	fractol_formula(t_mlx_data *data)
 {
@@ -126,11 +127,10 @@ __host__ void show_frame(t_mlx_data *data) {
 
 __host__ void	j_m_bs(t_mlx_data *data)
 {
-	dim3 block(32, 32);
+	dim3 block(16, 16);
 	dim3 grid((WIDTH + block.x - 1) / block.x, (HIGHT + block.y - 1) / block.y);
 
 	// calculate with GPU
-	
 	if (data->flag == 1)
 		julia_set<<<grid, block>>>(
 			data->matrix, WIDTH, HIGHT,
@@ -149,11 +149,13 @@ __host__ void	j_m_bs(t_mlx_data *data)
 	else
 		burning_ship(data);
 
+
 	// wait
 	cudaDeviceSynchronize();
-
+	
 	// show frame
 	show_frame(data);
+
 }
 
 __host__ void create_matrix(int** matrix) {
@@ -165,10 +167,10 @@ __host__ void create_matrix(int** matrix) {
 		exit(1);
 	}
     cudaMallocManaged(matrix, WIDTH * HIGHT * sizeof(int));
-    /*int device = -1;
+    int device = -1;
 	cudaError_t err = cudaGetDevice(&device);
 	printf("cudaGetDevice returned %d, device = %d\n", err, device);
-	cudaMemPrefetchAsync(*matrix, WIDTH * HIGHT * sizeof(int), device, 0);*/
+	cudaMemPrefetchAsync(*matrix, WIDTH * HIGHT * sizeof(int), device, 0);
 }
 
 __host__ void delete_matrix(int* matrix) {
