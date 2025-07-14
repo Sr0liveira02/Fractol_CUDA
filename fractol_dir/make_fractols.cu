@@ -67,7 +67,7 @@ __device__ int fractol_formula_cuda(
 }
 
 __global__ void julia_set(
-    int *matrix, int width, int height,
+    int *matrix,
     double x_mult, double y_mult,
     double x_cords, double y_cords,
     double real, double imag,
@@ -75,31 +75,31 @@ __global__ void julia_set(
 ) {
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
-    if (x < width && y < height) {
-        double z_r = ((x * x_mult / width)) - x_cords;
-        double z_i = y_cords - ((y * y_mult) / height);
+    if (x < WIDTH && y < HIGHT) {
+        double z_r = ((x * x_mult / WIDTH)) - x_cords;
+        double z_i = y_cords - ((y * y_mult) / HIGHT);
         double c_r = real;
         double c_i = imag;
-        matrix[y * width + x] = fractol_formula_cuda(
+        matrix[y * WIDTH + x] = fractol_formula_cuda(
             z_r, z_i, c_r, c_i, sc, col, a, b, c, d
         );
     }
 }
 
 __global__ void mandelbrot(
-    int *matrix, int width, int height,
+    int *matrix,
     double x_mult, double y_mult,
     double x_cords, double y_cords,
     int sc, int col, double a, double b, double c, double d
 ) {
     int x = blockIdx.x * blockDim.x + threadIdx.x;
     int y = blockIdx.y * blockDim.y + threadIdx.y;
-    if (x < width && y < height) {
+    if (x < WIDTH && y < HIGHT) {
         double z_r = 0.0;
         double z_i = 0.0;
-        double c_r = ((x * x_mult / width)) - x_cords;
-        double c_i = y_cords - ((y * y_mult) / height);
-        matrix[y * width + x] = fractol_formula_cuda(
+        double c_r = ((x * x_mult / WIDTH)) - x_cords;
+        double c_i = y_cords - ((y * y_mult) / HIGHT);
+        matrix[y * WIDTH + x] = fractol_formula_cuda(
             z_r, z_i, c_r, c_i, sc, col, a, b, c, d
         );
     }
@@ -133,16 +133,14 @@ __host__ void	j_m_bs(t_mlx_data *data)
 	// calculate with GPU
 	if (data->flag == 1)
 		julia_set<<<grid, block>>>(
-			data->matrix, WIDTH, HIGHT,
-			data->x_mult, data->y_mult,
+			data->matrix, data->x_mult, data->y_mult,
 			data->x_cords, data->y_cords,
 			data->real, data->i,
 			data->sc, data->col, data->a, data->b, data->c, data->d
 		);
 	else if (data->flag == 0)
 		mandelbrot<<<grid, block>>>(
-			data->matrix, WIDTH, HIGHT,
-			data->x_mult, data->y_mult,
+			data->matrix, data->x_mult, data->y_mult,
 			data->x_cords, data->y_cords,
 			data->sc, data->col, data->a, data->b, data->c, data->d
 		);
@@ -166,10 +164,13 @@ __host__ void create_matrix(int** matrix) {
 		fprintf(stderr, "No CUDA devices found!\n");
 		exit(1);
 	}
+
     cudaMallocManaged(matrix, WIDTH * HIGHT * sizeof(int));
-    int device = -1;
+    
+	int device = -1;
 	cudaError_t err = cudaGetDevice(&device);
 	printf("cudaGetDevice returned %d, device = %d\n", err, device);
+	
 	cudaMemPrefetchAsync(*matrix, WIDTH * HIGHT * sizeof(int), device, 0);
 }
 
