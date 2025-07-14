@@ -4,5 +4,5 @@ minilibx-linux/
 *.a
 *.o
 fractol
-fractol_cuda
+.vscode/
 

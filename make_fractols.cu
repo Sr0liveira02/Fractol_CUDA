@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fractol.h"
-#include "sys/time.h"
+#include "fractol.h"
 
 __host__ int 	fractol_formula(t_mlx_data *data)
 {
@@ -130,6 +129,13 @@ __host__ void	j_m_bs(t_mlx_data *data)
 	dim3 block(16, 16);
 	dim3 grid((WIDTH + block.x - 1) / block.x, (HIGHT + block.y - 1) / block.y);
 
+	cudaEvent_t start, stop;
+	cudaEventCreate(&start);
+	cudaEventCreate(&stop);
+
+	// Record start event
+	cudaEventRecord(start);
+
 	// calculate with GPU
 	if (data->flag == 1)
 		julia_set<<<grid, block>>>(
@@ -147,10 +153,25 @@ __host__ void	j_m_bs(t_mlx_data *data)
 	else
 		burning_ship(data);
 
-
 	// wait
 	cudaDeviceSynchronize();
-	
+
+	// Record end event
+	cudaEventRecord(stop);
+
+	// Wait for the end event to complete
+	cudaEventSynchronize(stop);
+
+	// Calculate elapsed time in milliseconds
+	float milliseconds = 0;
+	cudaEventElapsedTime(&milliseconds, start, stop);
+
+	// Cleanup
+	cudaEventDestroy(start);
+	cudaEventDestroy(stop);
+
+	printf("GPU MATH %f ms\n", milliseconds);
+		
 	// show frame
 	show_frame(data);
 

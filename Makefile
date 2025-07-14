@@ -61,25 +61,14 @@ HDR_FILE= ${PROJ}.h
 
 CC=cc
 
-CCUDA=nvcc
-
-CUDA_SRC     = fractol_dir/make_fractols.cu
-CUDA_OBJ     = $(CUDA_SRC:.cu=.o)
-MAIN_SRC     = fractol.cu
-MAIN_OBJ     = $(MAIN_SRC:.c=.o)
-
-SRC_FILES= $(filter-out ${FRCT_DIR}make_fractols.c, $(wildcard ${FRCT_DIR}*.c))
-
-CUFLAGS = -Xcompiler -Iminilibx-linux -I/usr/include
-
 AR=ar rcs
 
-CFLAGS= -Wall -Wextra -Werror
+CFLAGS= -w -I/usr/include -O3
 
 HD=
 #-D HIGHT=100
 
-all: ${PROJ}
+all: re ${PROJ}
 
 libx:minilibx-linux
 
@@ -92,8 +81,20 @@ ${MLBLIB}:
 ${MLBMAC}:
 	cd minilibx-linux && make
 
-${NAME}: ${OBJ_FILES}
-	${AR} ${NAME} $?
+gpu.o: make_fractols.cu
+	nvcc -lineinfo -Xcompiler -Iminilibx-linux -I/usr/include -O3 -c make_fractols.cu -o gpu.o
+
+cpu.o: make_fractols.c
+	cc ${CFLAGS} -c make_fractols.c -o cpu.o
+
+cuda: ${MLBLIB} cuda.a
+
+cuda.a: re ${OBJ_FILES} gpu.o ${LIBFT} 
+	${AR} cuda.a ${OBJ_FILES} gpu.o
+	${CC} ${CFLAGS} ${PROJ}.c cuda.a ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} ${HD} -lcudart -o ${PROJ}
+
+${NAME}: ${OBJ_FILES} cpu.o 
+	${AR} ${NAME} ${OBJ_FILES} cpu.o 
 
 ${LIBFT}: ${OBJ_LIB}
 	cd my_libft && make
@@ -115,26 +116,11 @@ ${PROJ}: ${NAME} ${LIBFT} ${PROJ}.c ${HDR_FILE} ${MLBLIB}
 #	${CC} ${CFLAGS} ${PROJ_BONUS}.c ${BONUS_ARQ} ${NAME} ${LIBFT} ${MLBMAC} ${MLX_MAC_FLAGS} ${HD} -o ${PROJ_BONUS}
 #	touch mac_bonus
 
-%o: %c
-	${CC} ${CFLAGS} -I/usr/include -O3 -c $< -o $@
-
-%.o: %.cu
-	${CCUDA} ${CUFLAGS} -c $< -o $@
-
-fractol_dir/make_fractols.o: fractol_dir/make_fractols.cu fractol.h
-	${CCUDA} ${CUFLAGS} -c $< -o $@
-
-fractol.o: fractol.c fractol.h
-	${CC} ${CFLAGS} -c $< -o $@
-
-cuda: fractol.o fractol_dir/make_fractols.o ${OBJ_FILES} ${LIBFT} ${MLBLIB}
-	${CC} fractol.o fractol_dir/make_fractols.o ${OBJ_FILES} ${LIBFT} ${MLBLIB} ${MLX_LINUX_FLAGS} -lcudart -o fractol_cuda
-
 bonus: ${PROJ_BONUS}
 	@touch bonus
 
 clean:
-	rm -f ${OBJ_FILES} ${CUDA_OBJ} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} bonus
+	rm -f *.o ${OBJ_FILES} ${OBJ_BONUS} ${OBJ_LIB} ${BONUS_ARQ} ${NAME} ${LIBFT} bonus
 
 fclean: clean
 	rm -f ${NAME} ${PROJ}

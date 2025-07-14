@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../fractol.h"
+#include "fractol.h"
 
 int	fractol_formula(t_mlx_data *data)
 {
